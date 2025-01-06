@@ -8,12 +8,46 @@
         "programmeDetail1": "Welcome address and inauguration",
         "programmeDetail2": "Cultural performance",
         "audienceType": "All",
-        "participantName": "John Doe",
-        "participantPhone": "+1234567890",
-        "coordinatorName": "Jane Smith",
-        "coordinatorPhone": "+1234567891",
-        "volunteerName": "Bob Wilson",
-        "volunteerPhone": "+1234567892",
+        "participants": [
+            {
+                "name": "John Doe",
+                "phone": "+1234567890"
+            },
+            {
+                "name": "Jane Doe",
+                "phone": "+1234567891"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Jane Smith",
+                "phone": "+1234567892"
+            },
+            {
+                "name": "Mike Johnson",
+                "phone": "+1234567893"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Bob Wilson",
+                "phone": "+1234567894"
+            },
+            {
+                "name": "Alice Brown",
+                "phone": "+1234567895"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "David Clark",
+                "phone": "+1234567896"
+            },
+            {
+                "name": "Sarah Wilson",
+                "phone": "+1234567897"
+            }
+        ],
         "sponsorName": "ABC Corp",
         "sponsorPhone": "+1234567893",
         "snacksName": "Morning Tea",

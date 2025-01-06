@@ -39,4 +39,21 @@
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
+}
+
+.people-group {
+    margin-bottom: 0.5rem;
+}
+
+.people-group .role {
+    font-weight: 600;
+}
+
+.people-group .phone-number {
+    margin-left: 1rem;
+    color: #666;
+}
+
+.people-group .phone-number a {
+    margin-right: 0.5rem;
 } 

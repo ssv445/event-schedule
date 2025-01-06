@@ -52,16 +52,21 @@ class FairSchedule {
             isToday ? 'current-day' : ''
         ].filter(Boolean).join(' ');
 
-        const phoneNumberTemplate = this.isAdmin ? `
-            <div class="phone-number">
-                <small>
-                    Coordinator: <a href="tel:${event.coordinatorPhone}">${event.coordinatorPhone}</a><br>
-                    Volunteer: <a href="tel:${event.volunteerPhone}">${event.volunteerPhone}</a><br>
-                    Sponsor: <a href="tel:${event.sponsorPhone}">${event.sponsorPhone}</a><br>
-                    Snacks: <a href="tel:${event.snacksPhone}">${event.snacksPhone}</a>
-                </small>
-            </div>
-        ` : '';
+        const renderPeople = (people, role) => {
+            if (!people || !people.length) return '';
+            
+            const namesList = people.map(p => p.name).join(', ');
+            const phonesList = this.isAdmin ? people.map(p => 
+                `<a href="tel:${p.phone}">${p.phone}</a>`
+            ).join(', ') : '';
+
+            return `
+                <div class="people-group">
+                    <span class="role">${role}:</span> ${namesList}
+                    ${phonesList ? `<div class="phone-number"><small>${phonesList}</small></div>` : ''}
+                </div>
+            `;
+        };
 
         return `
             <div class="${cardClasses}">
@@ -79,13 +84,21 @@ class FairSchedule {
                         <div class="details">
                             <small>
                                 Audience: ${event.audienceType}<br>
-                                Participant: ${event.participantName}<br>
-                                Coordinator: ${event.coordinatorName}<br>
-                                Volunteer: ${event.volunteerName}<br>
+                                ${renderPeople(event.participants, 'Participants')}
+                                ${renderPeople(event.organizers, 'Organizers')}
+                                ${renderPeople(event.coordinators, 'Coordinators')}
+                                ${renderPeople(event.volunteers, 'Volunteers')}
                                 Sponsor: ${event.sponsorName}<br>
                                 Snacks: ${event.snacksName} (${event.snacksCount} pax)
                             </small>
-                            ${phoneNumberTemplate}
+                            ${this.isAdmin ? `
+                                <div class="phone-number">
+                                    <small>
+                                        Sponsor: <a href="tel:${event.sponsorPhone}">${event.sponsorPhone}</a><br>
+                                        Snacks: <a href="tel:${event.snacksPhone}">${event.snacksPhone}</a>
+                                    </small>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 </div>
