@@ -99,36 +99,56 @@ class FairSchedule {
         const container = $('#eventsList');
         container.empty();
 
-        filteredEvents.forEach(event => {
-            const isCurrent = this.isEventCurrent(event);
-            const isFinished = this.isEventFinished(event);
+        // Group events by date
+        const eventsByDate = filteredEvents.reduce((acc, event) => {
+            if (!acc[event.date]) {
+                acc[event.date] = [];
+            }
+            acc[event.date].push(event);
+            return acc;
+        }, {});
 
-            const card = $(`
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card event-card ${isCurrent ? 'current' : ''} ${isFinished ? 'finished' : ''}">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                ${event.programmeName}
-                                ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
-                            </h5>
-                            <p class="card-text">
-                                <strong>Date:</strong> ${event.date}<br>
-                                <strong>Time:</strong> ${event.timeStart} - ${event.timeEnd}<br>
-                                <strong>Type:</strong> ${event.programType}
-                            </p>
-                            <div class="toggle-details">Show Details ▼</div>
-                            <div class="programme-details">
-                                <p>${event.programmeDetail1}</p>
-                                <p>${event.programmeDetail2}</p>
-                                <p><strong>Participants:</strong> ${event.participants}</p>
-                                <p><strong>Guests:</strong> ${event.guests}</p>
-                            </div>
-                        </div>
-                    </div>
+        // Sort dates
+        Object.keys(eventsByDate).sort().forEach(date => {
+            // Add date header
+            container.append(`
+                <div class="col-12">
+                    <div class="date-header">${new Date(date).toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })}</div>
                 </div>
             `);
 
-            container.append(card);
+            // Add events for this date
+            eventsByDate[date].forEach(event => {
+                const isCurrent = this.isEventCurrent(event);
+                const isFinished = this.isEventFinished(event);
+
+                container.append(`
+                    <div class="col-12">
+                        <div class="event-row ${isCurrent ? 'current' : ''} ${isFinished ? 'finished' : ''}">
+                            <div class="event-time">${event.timeStart} - ${event.timeEnd}</div>
+                            <div class="event-content">
+                                <div class="event-header">
+                                    <span class="event-name">${event.programmeName}</span>
+                                    <span class="event-type">${event.programType}</span>
+                                    ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
+                                </div>
+                                <div class="toggle-details">Show Details ▼</div>
+                                <div class="programme-details">
+                                    <p>${event.programmeDetail1}</p>
+                                    <p>${event.programmeDetail2}</p>
+                                    <p><strong>Participants:</strong> ${event.participants}</p>
+                                    <p><strong>Guests:</strong> ${event.guests}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            });
         });
     }
 
