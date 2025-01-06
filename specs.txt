@@ -29,8 +29,8 @@ Fair Schedule Single-Page Web App Specification
      "coordinatorPhone": "...",
      "volunteerName": "...",
      "volunteerPhone": "...",
-     "sponsorName": "...",
-     "sponsorPhone": "...",
+     "guestName": "...",
+     "guestPhone": "...",
      "snacksName": "...",
      "snacksPhone": "...",
      "snacksCount": 100

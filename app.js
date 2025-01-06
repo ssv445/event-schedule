@@ -68,6 +68,13 @@ class FairSchedule {
             `;
         };
 
+        const renderAudience = (audienceType) => {
+            const audiences = Object.entries(audienceType)
+                .filter(([_, included]) => included)
+                .map(([type]) => type.charAt(0).toUpperCase() + type.slice(1));
+            return audiences.join(', ');
+        };
+
         return `
             <div class="${cardClasses}">
                 <div class="card position-relative">
@@ -83,22 +90,23 @@ class FairSchedule {
                         </p>
                         <div class="details">
                             <small>
-                                Audience: ${event.audienceType}<br>
+                                Audience: ${renderAudience(event.audienceType)}<br>
                                 ${renderPeople(event.participants, 'Participants')}
                                 ${renderPeople(event.organizers, 'Organizers')}
                                 ${renderPeople(event.coordinators, 'Coordinators')}
                                 ${renderPeople(event.volunteers, 'Volunteers')}
-                                Sponsor: ${event.sponsorName}<br>
-                                Snacks: ${event.snacksName} (${event.snacksCount} pax)
+                                ${renderPeople(event.guest, 'Guest')}
+                                ${event.snacks.map(s => `
+                                    Snacks: ${s.name} (${s.count} pax)
+                                    ${this.isAdmin ? `
+                                        <div class="phone-number">
+                                            <small>
+                                                <a href="tel:${s.phone}">${s.phone}</a>
+                                            </small>
+                                        </div>
+                                    ` : ''}
+                                `).join('')}
                             </small>
-                            ${this.isAdmin ? `
-                                <div class="phone-number">
-                                    <small>
-                                        Sponsor: <a href="tel:${event.sponsorPhone}">${event.sponsorPhone}</a><br>
-                                        Snacks: <a href="tel:${event.snacksPhone}">${event.snacksPhone}</a>
-                                    </small>
-                                </div>
-                            ` : ''}
                         </div>
                     </div>
                 </div>

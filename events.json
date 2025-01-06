@@ -1,13 +1,20 @@
 [
     {
         "dayNumber": 1,
-        "date": "2024-03-20",
+        "date": "2025-03-20",
         "timeStart": "09:00",
         "timeEnd": "10:30",
         "programmeName": "Opening Ceremony",
         "programmeDetail1": "Welcome address and inauguration",
         "programmeDetail2": "Cultural performance",
-        "audienceType": "All",
+        "audienceType": {
+            "kids": true,
+            "adults": true,
+            "seniors": true,
+            "women": true,
+            "men": true,
+            "all": true
+        },
         "participants": [
             {
                 "name": "John Doe",
@@ -48,10 +55,538 @@
                 "phone": "+1234567897"
             }
         ],
-        "sponsorName": "ABC Corp",
-        "sponsorPhone": "+1234567893",
-        "snacksName": "Morning Tea",
-        "snacksPhone": "+1234567894",
-        "snacksCount": 100
+        "guest": [
+            {
+            "name": "ABC Corp",
+            "phone": "+1234567893"
+            }
+        ],
+        "snacks": [ 
+            {
+            "name": "Morning Tea",
+            "phone": "+1234567894",
+            "count": 100
+            }
+        ]
+    },
+    {
+        "dayNumber": 1,
+        "date": "2025-03-20",
+        "timeStart": "11:00",
+        "timeEnd": "12:30",
+        "programmeName": "Kids Art Workshop",
+        "programmeDetail1": "Painting and craft activities",
+        "programmeDetail2": "Materials provided",
+        "audienceType": {
+            "kids": true,
+            "adults": false,
+            "seniors": false,
+            "women": false,
+            "men": false,
+            "all": false
+        },
+        "participants": [
+            {
+                "name": "Sarah Johnson",
+                "phone": "+1234567897"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Mary Wilson",
+                "phone": "+1234567898"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Tom Brown",
+                "phone": "+1234567899"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "David Clark",
+                "phone": "+1234567896"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Juice & Cookies",
+                "phone": "+1234567901",
+                "count": 50
+            }
+        ]
+    },
+    {
+        "dayNumber": 1,
+        "date": "2025-03-20",
+        "timeStart": "14:00",
+        "timeEnd": "16:00",
+        "programmeName": "Women's Empowerment Panel",
+        "programmeDetail1": "Discussion on career development",
+        "programmeDetail2": "Networking session",
+        "audienceType": {
+            "kids": false,
+            "adults": true,
+            "seniors": true,
+            "women": true,
+            "men": false,
+            "all": false
+        },
+        "participants": [
+            {
+                "name": "Emma Thompson",
+                "phone": "+1234567902"
+            },
+            {
+                "name": "Lisa Chen",
+                "phone": "+1234567903"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Sarah Wilson",
+                "phone": "+1234567904"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Maria Garcia",
+                "phone": "+1234567905"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "Jennifer Lee",
+                "phone": "+1234567906"
+            }
+        ],
+        "guest": [
+            {
+                "name": "Women's Leadership Foundation",
+                "phone": "+1234567907"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Afternoon Tea",
+                "phone": "+1234567908",
+                "count": 75
+            }
+        ]
+    },
+    {
+        "dayNumber": 2,
+        "date": "2025-03-21",
+        "timeStart": "09:30",
+        "timeEnd": "11:00",
+        "programmeName": "Senior Fitness Session",
+        "programmeDetail1": "Gentle exercises and yoga",
+        "programmeDetail2": "Health tips discussion",
+        "audienceType": {
+            "kids": false,
+            "adults": false,
+            "seniors": true,
+            "women": true,
+            "men": true,
+            "all": false
+        },
+        "participants": [
+            {
+                "name": "Dr. James Wilson",
+                "phone": "+1234567909"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Robert Chen",
+                "phone": "+1234567910"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Patricia Lopez",
+                "phone": "+1234567911"
+            },
+            {
+                "name": "Michael Brown",
+                "phone": "+1234567912"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "David Clark",
+                "phone": "+1234567896"
+            }
+        ],
+        "guest": [
+            {
+                "name": "Health First",
+                "phone": "+1234567913"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Healthy Breakfast",
+                "phone": "+1234567914",
+                "count": 60
+            }
+        ]
+    },
+    {
+        "dayNumber": 2,
+        "date": "2025-03-21",
+        "timeStart": "13:00",
+        "timeEnd": "15:00",
+        "programmeName": "Tech Workshop",
+        "programmeDetail1": "Introduction to coding",
+        "programmeDetail2": "Hands-on practice session",
+        "audienceType": {
+            "kids": true,
+            "adults": true,
+            "seniors": false,
+            "women": true,
+            "men": true,
+            "all": false
+        },
+        "participants": [
+            {
+                "name": "Alex Johnson",
+                "phone": "+1234567915"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "David Lee",
+                "phone": "+1234567916"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Chris Wilson",
+                "phone": "+1234567917"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "Jennifer Lee",
+                "phone": "+1234567906"
+            }
+        ],
+        "guest": [
+            {
+                "name": "Tech Solutions Inc",
+                "phone": "+1234567918"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Energy Snacks",
+                "phone": "+1234567919",
+                "count": 40
+            }
+        ]
+    },
+    {
+        "dayNumber": 2,
+        "date": "2025-03-21",
+        "timeStart": "16:00",
+        "timeEnd": "18:00",
+        "programmeName": "Cultural Dance Performance",
+        "programmeDetail1": "Traditional and modern dances",
+        "programmeDetail2": "Interactive session with audience",
+        "audienceType": {
+            "kids": true,
+            "adults": true,
+            "seniors": true,
+            "women": true,
+            "men": true,
+            "all": true
+        },
+        "participants": [
+            {
+                "name": "Dance Troupe A",
+                "phone": "+1234567920"
+            },
+            {
+                "name": "Dance Troupe B",
+                "phone": "+1234567921"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Maria Rodriguez",
+                "phone": "+1234567922"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "John Smith",
+                "phone": "+1234567923"
+            },
+            {
+                "name": "Linda Chen",
+                "phone": "+1234567924"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "David Clark",
+                "phone": "+1234567896"
+            }
+        ],
+        "guest": [
+            {
+                "name": "Cultural Arts Foundation",
+                "phone": "+1234567925"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Evening Refreshments",
+                "phone": "+1234567926",
+                "count": 150
+            }
+        ]
+    },
+    {
+        "dayNumber": 3,
+        "date": "2025-03-22",
+        "timeStart": "10:00",
+        "timeEnd": "12:00",
+        "programmeName": "Environmental Workshop",
+        "programmeDetail1": "Recycling awareness",
+        "programmeDetail2": "Hands-on gardening session",
+        "audienceType": {
+            "kids": true,
+            "adults": true,
+            "seniors": true,
+            "women": true,
+            "men": true,
+            "all": true
+        },
+        "participants": [
+            {
+                "name": "Green Earth Society",
+                "phone": "+1234567927"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Emily Green",
+                "phone": "+1234567928"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Peter Wong",
+                "phone": "+1234567929"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "Jennifer Lee",
+                "phone": "+1234567906"
+            }
+        ],
+        "guest": [
+            {
+                "name": "Eco Solutions",
+                "phone": "+1234567930"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Organic Snacks",
+                "phone": "+1234567931",
+                "count": 80
+            }
+        ]
+    },
+    {
+        "dayNumber": 3,
+        "date": "2025-03-22",
+        "timeStart": "13:30",
+        "timeEnd": "15:30",
+        "programmeName": "Youth Sports Tournament",
+        "programmeDetail1": "Basketball and volleyball matches",
+        "programmeDetail2": "Prize distribution",
+        "audienceType": {
+            "kids": true,
+            "adults": true,
+            "seniors": false,
+            "women": true,
+            "men": true,
+            "all": false
+        },
+        "participants": [
+            {
+                "name": "Team Alpha",
+                "phone": "+1234567932"
+            },
+            {
+                "name": "Team Beta",
+                "phone": "+1234567933"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Mike Thompson",
+                "phone": "+1234567934"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Steve Johnson",
+                "phone": "+1234567935"
+            },
+            {
+                "name": "Anna Lee",
+                "phone": "+1234567936"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "David Clark",
+                "phone": "+1234567896"
+            }
+        ],
+        "guest": [
+            {
+                "name": "Sports Gear Pro",
+                "phone": "+1234567937"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Sports Refreshments",
+                "phone": "+1234567938",
+                "count": 100
+            }
+        ]
+    },
+    {
+        "dayNumber": 3,
+        "date": "2025-03-22",
+        "timeStart": "16:00",
+        "timeEnd": "17:30",
+        "programmeName": "Music Concert",
+        "programmeDetail1": "Local bands performance",
+        "programmeDetail2": "Audience participation session",
+        "audienceType": {
+            "kids": true,
+            "adults": true,
+            "seniors": true,
+            "women": true,
+            "men": true,
+            "all": true
+        },
+        "participants": [
+            {
+                "name": "The Locals Band",
+                "phone": "+1234567939"
+            },
+            {
+                "name": "Harmony Group",
+                "phone": "+1234567940"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Jack Wilson",
+                "phone": "+1234567941"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Rachel Green",
+                "phone": "+1234567942"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "Jennifer Lee",
+                "phone": "+1234567906"
+            }
+        ],
+        "guest": [
+            {
+                "name": "Music World",
+                "phone": "+1234567943"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Concert Snacks",
+                "phone": "+1234567944",
+                "count": 200
+            }
+        ]
+    },
+    {
+        "dayNumber": 3,
+        "date": "2025-03-22",
+        "timeStart": "18:00",
+        "timeEnd": "20:00",
+        "programmeName": "Closing Ceremony",
+        "programmeDetail1": "Award ceremony and acknowledgments",
+        "programmeDetail2": "Farewell dinner",
+        "audienceType": {
+            "kids": true,
+            "adults": true,
+            "seniors": true,
+            "women": true,
+            "men": true,
+            "all": true
+        },
+        "participants": [
+            {
+                "name": "All Performers",
+                "phone": "+1234567945"
+            }
+        ],
+        "coordinators": [
+            {
+                "name": "Jane Smith",
+                "phone": "+1234567892"
+            }
+        ],
+        "volunteers": [
+            {
+                "name": "Bob Wilson",
+                "phone": "+1234567894"
+            },
+            {
+                "name": "Alice Brown",
+                "phone": "+1234567895"
+            }
+        ],
+        "organizers": [
+            {
+                "name": "David Clark",
+                "phone": "+1234567896"
+            },
+            {
+                "name": "Jennifer Lee",
+                "phone": "+1234567906"
+            }
+        ],
+        "guest": [
+            {
+                "name": "ABC Corp",
+                "phone": "+1234567893"
+            },
+            {
+                "name": "Community Foundation",
+                "phone": "+1234567946"
+            }
+        ],
+        "snacks": [
+            {
+                "name": "Dinner Service",
+                "phone": "+1234567947",
+                "count": 300
+            }
+        ]
     }
 ] 
