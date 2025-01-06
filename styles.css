@@ -7,53 +7,32 @@
     box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
 }
 
-.event-card.past {
+.event-card.finished {
     opacity: 0.6;
-    filter: blur(1px);
+    filter: grayscale(50%);
 }
 
-.current-day {
-    background-color: #e8f5e9;
-}
-
-.phone-number {
-    display: none;
-}
-
-.admin .phone-number {
-    display: inline;
-}
-
-.live-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #dc3545;
+.now-live {
+    background-color: #28a745;
     color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    animation: pulse 2s infinite;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    display: inline-block;
+    margin-left: 8px;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+.programme-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
 }
 
-.people-group {
-    margin-bottom: 0.5rem;
+.programme-details.expanded {
+    max-height: 500px;
 }
 
-.people-group .role {
-    font-weight: 600;
-}
-
-.people-group .phone-number {
-    margin-left: 1rem;
-    color: #666;
-}
-
-.people-group .phone-number a {
-    margin-right: 0.5rem;
+.toggle-details {
+    cursor: pointer;
+    color: #0d6efd;
 } 

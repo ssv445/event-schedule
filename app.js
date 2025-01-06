@@ -1,148 +1,142 @@
 class FairSchedule {
     constructor() {
         this.events = [];
-        this.isAdmin = new URLSearchParams(window.location.search).get('mode') === 'admin';
         this.init();
     }
 
     async init() {
         try {
-            // In real app, replace with actual API endpoint
-            const response = await $.getJSON('events.json');
-            this.events = response;
-            this.render();
-            this.setupSearch();
-            
-            // Update status every minute
-            setInterval(() => this.updateEventStatus(), 60000);
+            await this.loadEvents();
+            this.setupFilters();
+            this.setupEventListeners();
+            this.renderEvents();
+            this.startTimeUpdates();
         } catch (error) {
-            console.error('Failed to load events:', error);
+            console.error('Initialization error:', error);
         }
     }
 
-    isCurrentDay(date) {
-        const today = new Date().toISOString().split('T')[0];
-        return date === today;
+    async loadEvents() {
+        try {
+            const response = await $.ajax({
+                url: './events.csv',
+                // url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRp22KQAC4hs9_NGWEOyQ8i6JyHwspWz1jTPr_uLci9LIBvj7m4-RdrN6MwKXOhW0RI0g0M09qFtJhm/pub?output=csv',
+                dataType: 'text'
+            });
+            this.events = this.parseCSV(response);
+            this.updateProgramTypeOptions();
+        } catch (error) {
+            console.error('Error loading events:', error);
+        }
     }
 
-    isEventLive(event) {
+    parseCSV(csv) {
+        const lines = csv.split('\n');
+        const headers = lines[0].split(',').map(header => header.replace(/"/g, '').trim());
+        return lines.slice(1).map(line => {
+            // Match CSV fields, handling quoted values with potential commas inside
+            const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g)
+                .map(value => value.replace(/"/g, '').trim());
+            return headers.reduce((obj, header, index) => {
+                obj[header] = values[index] || '';
+                return obj;
+            }, {});
+        });
+    }
+
+    setupFilters() {
+        this.searchInput = $('#searchInput');
+        this.programTypeFilter = $('#programTypeFilter');
+        this.dateFilter = $('#dateFilter');
+    }
+
+    setupEventListeners() {
+        this.searchInput.on('input', () => this.filterEvents());
+        this.programTypeFilter.on('change', () => this.filterEvents());
+        this.dateFilter.on('change', () => this.filterEvents());
+        
+        $(document).on('click', '.toggle-details', function() {
+            $(this).next('.programme-details').toggleClass('expanded');
+        });
+    }
+
+    updateProgramTypeOptions() {
+        const types = [...new Set(this.events.map(event => event.programType))];
+        types.forEach(type => {
+            this.programTypeFilter.append(`<option value="${type}">${type}</option>`);
+        });
+    }
+
+    isEventCurrent(event) {
         const now = new Date();
         const startTime = new Date(`${event.date} ${event.timeStart}`);
         const endTime = new Date(`${event.date} ${event.timeEnd}`);
         return now >= startTime && now <= endTime;
     }
 
-    isEventPast(event) {
+    isEventFinished(event) {
         const now = new Date();
         const endTime = new Date(`${event.date} ${event.timeEnd}`);
         return now > endTime;
     }
 
-    createEventCard(event) {
-        const isLive = this.isEventLive(event);
-        const isPast = this.isEventPast(event);
-        const isToday = this.isCurrentDay(event.date);
+    filterEvents() {
+        const searchTerm = this.searchInput.val().toLowerCase();
+        const programType = this.programTypeFilter.val();
+        const dateFilter = this.dateFilter.val();
 
-        const cardClasses = [
-            'event-card',
-            'col-12',
-            'mb-3',
-            isLive ? 'current' : '',
-            isPast ? 'past' : '',
-            isToday ? 'current-day' : ''
-        ].filter(Boolean).join(' ');
+        this.renderEvents(this.events.filter(event => {
+            const matchesSearch = Object.values(event).some(value => 
+                value.toLowerCase().includes(searchTerm)
+            );
+            const matchesType = !programType || event.programType === programType;
+            const matchesDate = !dateFilter || event.date === dateFilter;
+            return matchesSearch && matchesType && matchesDate;
+        }));
+    }
 
-        const renderPeople = (people, role) => {
-            if (!people || !people.length) return '';
-            
-            const namesList = people.map(p => p.name).join(', ');
-            const phonesList = this.isAdmin ? people.map(p => 
-                `<a href="tel:${p.phone}">${p.phone}</a>`
-            ).join(', ') : '';
+    renderEvents(filteredEvents = this.events) {
+        const container = $('#eventsList');
+        container.empty();
 
-            return `
-                <div class="people-group">
-                    <span class="role">${role}:</span> ${namesList}
-                    ${phonesList ? `<div class="phone-number"><small>${phonesList}</small></div>` : ''}
-                </div>
-            `;
-        };
+        filteredEvents.forEach(event => {
+            const isCurrent = this.isEventCurrent(event);
+            const isFinished = this.isEventFinished(event);
 
-        const renderAudience = (audienceType) => {
-            const audiences = Object.entries(audienceType)
-                .filter(([_, included]) => included)
-                .map(([type]) => type.charAt(0).toUpperCase() + type.slice(1));
-            return audiences.join(', ');
-        };
-
-        return `
-            <div class="${cardClasses}">
-                <div class="card position-relative">
-                    ${isLive ? '<span class="live-badge">Now Live!</span>' : ''}
-                    <div class="card-body">
-                        <h5 class="card-title">${event.programmeName}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            ${event.date} | ${event.timeStart} - ${event.timeEnd}
-                        </h6>
-                        <p class="card-text">
-                            ${event.programmeDetail1}<br>
-                            ${event.programmeDetail2 || ''}
-                        </p>
-                        <div class="details">
-                            <small>
-                                Audience: ${renderAudience(event.audienceType)}<br>
-                                ${renderPeople(event.participants, 'Participants')}
-                                ${renderPeople(event.organizers, 'Organizers')}
-                                ${renderPeople(event.coordinators, 'Coordinators')}
-                                ${renderPeople(event.volunteers, 'Volunteers')}
-                                ${renderPeople(event.guest, 'Guest')}
-                                ${event.snacks.map(s => `
-                                    Snacks: ${s.name} (${s.count} pax)
-                                    ${this.isAdmin ? `
-                                        <div class="phone-number">
-                                            <small>
-                                                <a href="tel:${s.phone}">${s.phone}</a>
-                                            </small>
-                                        </div>
-                                    ` : ''}
-                                `).join('')}
-                            </small>
+            const card = $(`
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card event-card ${isCurrent ? 'current' : ''} ${isFinished ? 'finished' : ''}">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                ${event.programmeName}
+                                ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
+                            </h5>
+                            <p class="card-text">
+                                <strong>Date:</strong> ${event.date}<br>
+                                <strong>Time:</strong> ${event.timeStart} - ${event.timeEnd}<br>
+                                <strong>Type:</strong> ${event.programType}
+                            </p>
+                            <div class="toggle-details">Show Details ▼</div>
+                            <div class="programme-details">
+                                <p>${event.programmeDetail1}</p>
+                                <p>${event.programmeDetail2}</p>
+                                <p><strong>Participants:</strong> ${event.participants}</p>
+                                <p><strong>Guests:</strong> ${event.guests}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
-    }
+            `);
 
-    render() {
-        const container = $('#eventsList');
-        container.empty();
-        
-        if (this.isAdmin) {
-            document.body.classList.add('admin');
-        }
-
-        this.events.forEach(event => {
-            container.append(this.createEventCard(event));
+            container.append(card);
         });
     }
 
-    setupSearch() {
-        $('#searchInput').on('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            $('.event-card').each((_, card) => {
-                const content = $(card).text().toLowerCase();
-                $(card).toggle(content.includes(searchTerm));
-            });
-        });
-    }
-
-    updateEventStatus() {
-        this.render();
+    startTimeUpdates() {
+        setInterval(() => this.renderEvents(), 60000); // Update every minute
     }
 }
 
-// Initialize when document is ready
 $(document).ready(() => {
     new FairSchedule();
 }); 
