@@ -1,0 +1,75 @@
+Fair Schedule Single-Page Web App Specification
+----------------------------------------------
+
+1. OVERVIEW
+   - Single HTML page displays schedule of events for a fair.
+   - Public view (no phone numbers).
+   - Admin view (phone numbers visible) triggered by URL flag (e.g., ?mode=admin).
+   - Highlight the current day and the currently running programme.
+   - Blur (visually de-emphasize) the programmes that have already finished.
+
+2. TECHNOLOGY STACK
+   - HTML5, CSS3, Bootstrap for layout/styling.
+   - JavaScript + jQuery for data handling and dynamic rendering.
+   - JSON for storing event data (converted from Excel).
+
+3. DATA STRUCTURE (Example JSON Object)
+   {
+     "dayNumber": 1,
+     "date": "YYYY-MM-DD",
+     "timeStart": "HH:MM",
+     "timeEnd": "HH:MM",
+     "programmeName": "...",
+     "programmeDetail1": "...",
+     "programmeDetail2": "...",
+     "audienceType": "...",
+     "participantName": "...",
+     "participantPhone": "...",
+     "coordinatorName": "...",
+     "coordinatorPhone": "...",
+     "volunteerName": "...",
+     "volunteerPhone": "...",
+     "sponsorName": "...",
+     "sponsorPhone": "...",
+     "snacksName": "...",
+     "snacksPhone": "...",
+     "snacksCount": 100
+   }
+
+4. UI LAYOUT
+   - Header:
+     - Title.
+     - Optional search/filter bar.
+   - Event List:
+     - Displayed via Bootstrap cards or table rows.
+     - Always show:
+       * Date, time, programme name, audience type, etc.
+     - For admin mode (?mode=admin in URL), show phone numbers as "tel:" links.
+   - Highlighting/Blurring:
+     - Check current date/time in JavaScript.
+     - Compare each event’s date/time with the current date/time.
+       * If the event is in progress (current time between timeStart and timeEnd), highlight it.
+       * If the event’s end time is already passed, apply a blur or grayed-out style.
+       * If the event is for a future day or time, display normally.
+     - If it’s the current day, highlight the date header (or dayNumber) as well.
+   - Footer:
+     - Basic contact or disclaimers.
+
+5. IMPLEMENTATION STEPS
+   1. Convert Excel to JSON.
+   2. Create index.html with Bootstrap layout.
+   3. On page load:
+      - Load JSON using jQuery (e.g., $.ajax).
+      - Determine current date/time in JavaScript.
+      - Render each event:
+        * Default style for upcoming or same-day-but-not-yet-started events.
+        * Special highlight style for in-progress events.
+        * Blur or gray-out style for finished events.
+      - If ?mode=admin is in the URL, also render phone numbers.
+   4. Optional: Add sorting, filtering, or search features.
+
+6. ENHANCEMENTS (Optional)
+   - Sorting by date/time or programme name.
+   - Collapse/expand programme details for readability.
+   - Quick filtering by day, coordinator, etc.
+   - Display a “Now Live!” label for the currently running event.

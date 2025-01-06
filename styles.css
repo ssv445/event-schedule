@@ -1,0 +1,42 @@
+.event-card {
+    transition: all 0.3s ease;
+}
+
+.event-card.current {
+    border: 2px solid #28a745 !important;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+}
+
+.event-card.past {
+    opacity: 0.6;
+    filter: blur(1px);
+}
+
+.current-day {
+    background-color: #e8f5e9;
+}
+
+.phone-number {
+    display: none;
+}
+
+.admin .phone-number {
+    display: inline;
+}
+
+.live-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+} 

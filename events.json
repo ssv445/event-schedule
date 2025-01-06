@@ -1,0 +1,23 @@
+[
+    {
+        "dayNumber": 1,
+        "date": "2024-03-20",
+        "timeStart": "09:00",
+        "timeEnd": "10:30",
+        "programmeName": "Opening Ceremony",
+        "programmeDetail1": "Welcome address and inauguration",
+        "programmeDetail2": "Cultural performance",
+        "audienceType": "All",
+        "participantName": "John Doe",
+        "participantPhone": "+1234567890",
+        "coordinatorName": "Jane Smith",
+        "coordinatorPhone": "+1234567891",
+        "volunteerName": "Bob Wilson",
+        "volunteerPhone": "+1234567892",
+        "sponsorName": "ABC Corp",
+        "sponsorPhone": "+1234567893",
+        "snacksName": "Morning Tea",
+        "snacksPhone": "+1234567894",
+        "snacksCount": 100
+    }
+] 
