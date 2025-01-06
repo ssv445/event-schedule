@@ -56,7 +56,18 @@ class FairSchedule {
         this.dateFilter.on('change', () => this.filterEvents());
         
         $(document).on('click', '.toggle-details', function() {
-            $(this).next('.programme-details').toggleClass('expanded');
+            const $details = $(this).next('.programme-details');
+            const $icon = $(this).find('.toggle-icon');
+            const $text = $(this).find('.toggle-text');
+            
+            $details.toggleClass('expanded');
+            if ($details.hasClass('expanded')) {
+                $icon.text('▲');
+                $text.text('Hide Details');
+            } else {
+                $icon.text('▼');
+                $text.text('Show Details');
+            }
         });
     }
 
@@ -133,14 +144,19 @@ class FairSchedule {
                             <div class="event-time">${event.timeStart} - ${event.timeEnd}</div>
                             <div class="event-content">
                                 <div class="event-header">
-                                    <span class="event-name">${event.programmeName}</span>
-                                    <span class="event-type">${event.programType}</span>
-                                    ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
+                                    <div class="event-main-info">
+                                        <span class="event-name">${event.programmeName}</span>
+                                        <div class="event-brief">${event.programmeDetail1}</div>
+                                        <span class="event-type">${event.programType}</span>
+                                        ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
+                                    </div>
                                 </div>
-                                <div class="toggle-details">Show Details ▼</div>
+                                <div class="toggle-details">
+                                    <span class="toggle-icon">▼</span>
+                                    <span class="toggle-text">Show Details</span>
+                                </div>
                                 <div class="programme-details">
-                                    <p>${event.programmeDetail1}</p>
-                                    <p>${event.programmeDetail2}</p>
+                                    <p><strong>Additional Details:</strong> ${event.programmeDetail2}</p>
                                     <p><strong>Participants:</strong> ${event.participants}</p>
                                     <p><strong>Guests:</strong> ${event.guests}</p>
                                 </div>
