@@ -20,11 +20,11 @@ class FairSchedule {
     async loadEvents() {
         try {
             const response = await $.ajax({
-                url: './events.csv',
-                // url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRp22KQAC4hs9_NGWEOyQ8i6JyHwspWz1jTPr_uLci9LIBvj7m4-RdrN6MwKXOhW0RI0g0M09qFtJhm/pub?output=csv',
+                // url: './events.csv',
+                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRp22KQAC4hs9_NGWEOyQ8i6JyHwspWz1jTPr_uLci9LIBvj7m4-RdrN6MwKXOhW0RI0g0M09qFtJhm/pub?gid=0&single=true&output=tsv',
                 dataType: 'text'
             });
-            this.events = this.parseCSV(response);
+            this.events = this.parseTSV(response);
             this.updateProgramTypeOptions();
         } catch (error) {
             console.error('Error loading events:', error);
@@ -38,6 +38,18 @@ class FairSchedule {
             // Match CSV fields, handling quoted values with potential commas inside
             const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g)
                 .map(value => value.replace(/"/g, '').trim());
+            return headers.reduce((obj, header, index) => {
+                obj[header] = values[index] || '';
+                return obj;
+            }, {});
+        });
+    }
+
+    parseTSV(tsv) {
+        const lines = tsv.split('\n');
+        const headers = lines[0].split('\t').map(header => header.replace(/"/g, '').trim());
+        return lines.slice(1).map(line => {
+            const values = line.split('\t').map(value => value.replace(/"/g, '').trim());
             return headers.reduce((obj, header, index) => {
                 obj[header] = values[index] || '';
                 return obj;
