@@ -126,7 +126,7 @@
 }
 
 .date-header {
-    background-color: #f4f46d;
+    background-color: #a9e189;
     padding: 1rem;
     margin: 1rem 0 0.5rem;
     font-weight: bold;
@@ -240,3 +240,7 @@ main {
     position: relative;
     z-index: 1;
 } 
+
+header, footer {
+    background-color: #f9de5a;
+}
