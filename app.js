@@ -161,13 +161,7 @@ class FairSchedule {
                             <div class="event-content">
                                 <div class="event-header">
                                     <div class="event-main-info">
-                                        ${event.programmeImage ? `
-                                            <div class="event-image">
-                                                <a href="${event.programmeImage}" target="_blank">
-                                                    <img src="${event.programmeImage}" alt="${event.programmeName}">
-                                                </a>
-                                            </div>
-                                        ` : ''}
+                                       
                                         <span class="event-name">${event.programmeName}</span>
                                         ${event.programmeDetail1 ? `<div class="event-brief">${event.programmeDetail1}</div>` : ''}
                                         ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
@@ -189,6 +183,13 @@ class FairSchedule {
                                                 </div>
                                             ` : ''}
                                         </div>
+                                         ${event.programmeImage ? `
+                                            <div class="event-image">
+                                                <a href="${event.programmeImage}" target="_blank">
+                                                    <img src="${event.programmeImage}" alt="${event.programmeName}">
+                                                </a>
+                                            </div>
+                                        ` : ''}
                                     </div>
                                 </div>
                             </div>
