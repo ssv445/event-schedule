@@ -91,6 +91,24 @@ class FairSchedule {
         const container = $('#eventsList');
         container.empty();
 
+        const formatTime = (time24) => {
+            const [hours, minutes] = time24.split(':');
+            let period = 'AM';
+            let hours12 = parseInt(hours);
+            
+            if (hours12 >= 12) {
+                period = 'PM';
+                if (hours12 > 12) {
+                    hours12 -= 12;
+                }
+            }
+            if (hours12 === 0) {
+                hours12 = 12;
+            }
+            
+            return `${hours12}:${minutes} ${period}`;
+        };
+
         const eventsByDate = filteredEvents.reduce((acc, event) => {
             if (!acc[event.date]) {
                 acc[event.date] = [];
@@ -138,7 +156,7 @@ class FairSchedule {
                 container.append(`
                     <div class="col-12">
                         <div class="event-row ${isCurrent ? 'current' : ''} ${isFinished ? 'finished' : ''}">
-                            <div class="event-time">${event.timeStart} - ${event.timeEnd}</div>
+                            <div class="event-time">${formatTime(event.timeStart)} - ${formatTime(event.timeEnd)}</div>
                             <div class="event-content">
                                 <div class="event-header">
                                     <div class="event-main-info">
