@@ -143,51 +143,35 @@ class FairSchedule {
                                 <div class="event-header">
                                     <div class="event-main-info">
                                         <span class="event-name">${event.programmeName}</span>
-                                        <div class="event-brief">${event.programmeDetail1}</div>
-                                        <span class="event-type">${event.programType}</span>
+                                        ${event.programmeDetail1 ? `<div class="event-brief">${event.programmeDetail1}</div>` : ''}
+                                        ${event.programType ? `<span class="event-type">${event.programType}</span>` : ''}
                                         ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
+                                        ${event.programmeDetail2 ? `<div class="event-detail">${event.programmeDetail2}</div>` : ''}
                                         <div class="event-contacts">
-                                            <div class="coordinators">
-                                                <strong>Coordinators:</strong> ${renderContacts(parseContactInfo(event.coordinators))}
-                                            </div>
-                                            <div class="volunteers">
-                                                <strong>Volunteers:</strong> ${renderContacts(parseContactInfo(event.volunteers))}
-                                            </div>
+                                            ${event.coordinators ? `
+                                                <div class="coordinators">
+                                                    <strong>Coordinators:</strong> ${renderContacts(parseContactInfo(event.coordinators))}
+                                                </div>
+                                            ` : ''}
+                                            ${event.volunteers ? `
+                                                <div class="volunteers">
+                                                    <strong>Volunteers:</strong> ${renderContacts(parseContactInfo(event.volunteers))}
+                                                </div>
+                                            ` : ''}
+                                            ${event.guests ? `
+                                                <div class="guests">
+                                                    <strong>Guests:</strong> ${event.guests}
+                                                </div>
+                                            ` : ''}
                                         </div>
                                     </div>
                                 </div>
-                                ${this.isAdminMode ? this.renderAdminDetails(event) : this.renderPublicDetails(event)}
                             </div>
                         </div>
                     </div>
                 `);
             });
         });
-    }
-
-    renderAdminDetails(event) {
-        return `
-            <div class="admin-details">
-                <p><strong>Additional Details:</strong> ${event.programmeDetail2}</p>
-                <p><strong>Participants:</strong> ${event.participants}</p>
-                <p><strong>Coordinators:</strong> ${event.coordinators}</p>
-                <p><strong>Volunteers:</strong> ${event.volunteers}</p>
-                <p><strong>Guests:</strong> ${event.guests}</p>
-            </div>
-        `;
-    }
-
-    renderPublicDetails(event) {
-        return `
-            <div class="toggle-details">
-                <span class="toggle-icon">▼</span>
-                <span class="toggle-text">Show Details</span>
-            </div>
-            <div class="programme-details">
-                <p><strong>Additional Details:</strong> ${event.programmeDetail2}</p>
-                <p><strong>Guests:</strong> ${event.guests}</p>
-            </div>
-        `;
     }
 
     startTimeUpdates() {
