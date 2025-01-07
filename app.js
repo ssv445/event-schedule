@@ -1,6 +1,7 @@
 class FairSchedule {
     constructor() {
         this.events = [];
+        this.isAdminMode = new URLSearchParams(window.location.search).get('mode') === 'admin';
         this.init();
     }
 
@@ -110,7 +111,6 @@ class FairSchedule {
         const container = $('#eventsList');
         container.empty();
 
-        // Group events by date
         const eventsByDate = filteredEvents.reduce((acc, event) => {
             if (!acc[event.date]) {
                 acc[event.date] = [];
@@ -119,9 +119,7 @@ class FairSchedule {
             return acc;
         }, {});
 
-        // Sort dates
         Object.keys(eventsByDate).sort().forEach(date => {
-            // Add date header
             container.append(`
                 <div class="col-12">
                     <div class="date-header">${new Date(date).toLocaleDateString('en-US', { 
@@ -133,7 +131,6 @@ class FairSchedule {
                 </div>
             `);
 
-            // Add events for this date
             eventsByDate[date].forEach(event => {
                 const isCurrent = this.isEventCurrent(event);
                 const isFinished = this.isEventFinished(event);
@@ -151,21 +148,38 @@ class FairSchedule {
                                         ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
                                     </div>
                                 </div>
-                                <div class="toggle-details">
-                                    <span class="toggle-icon">▼</span>
-                                    <span class="toggle-text">Show Details</span>
-                                </div>
-                                <div class="programme-details">
-                                    <p><strong>Additional Details:</strong> ${event.programmeDetail2}</p>
-                                    <p><strong>Participants:</strong> ${event.participants}</p>
-                                    <p><strong>Guests:</strong> ${event.guests}</p>
-                                </div>
+                                ${this.isAdminMode ? this.renderAdminDetails(event) : this.renderPublicDetails(event)}
                             </div>
                         </div>
                     </div>
                 `);
             });
         });
+    }
+
+    renderAdminDetails(event) {
+        return `
+            <div class="admin-details">
+                <p><strong>Additional Details:</strong> ${event.programmeDetail2}</p>
+                <p><strong>Participants:</strong> ${event.participants}</p>
+                <p><strong>Coordinators:</strong> ${event.coordinators}</p>
+                <p><strong>Volunteers:</strong> ${event.volunteers}</p>
+                <p><strong>Guests:</strong> ${event.guests}</p>
+            </div>
+        `;
+    }
+
+    renderPublicDetails(event) {
+        return `
+            <div class="toggle-details">
+                <span class="toggle-icon">▼</span>
+                <span class="toggle-text">Show Details</span>
+            </div>
+            <div class="programme-details">
+                <p><strong>Additional Details:</strong> ${event.programmeDetail2}</p>
+                <p><strong>Guests:</strong> ${event.guests}</p>
+            </div>
+        `;
     }
 
     startTimeUpdates() {
