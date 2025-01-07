@@ -144,7 +144,6 @@ class FairSchedule {
                                     <div class="event-main-info">
                                         <span class="event-name">${event.programmeName}</span>
                                         ${event.programmeDetail1 ? `<div class="event-brief">${event.programmeDetail1}</div>` : ''}
-                                        ${event.programType ? `<span class="event-type">${event.programType}</span>` : ''}
                                         ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
                                         ${event.programmeDetail2 ? `<div class="event-detail">${event.programmeDetail2}</div>` : ''}
                                         <div class="event-contacts">
