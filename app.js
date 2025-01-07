@@ -120,7 +120,7 @@ class FairSchedule {
 
         Object.keys(eventsByDate).sort().forEach(date => {
             container.append(`
-                <div class="col-12">
+                <div class="col-12 date-header-wrapper">
                     <div class="date-header">${new Date(date).toLocaleDateString('en-US', { 
                         weekday: 'long', 
                         year: 'numeric', 
