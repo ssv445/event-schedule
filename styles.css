@@ -148,14 +148,8 @@
     margin-bottom: 1.5rem;
 }
 
-.event-details {
-    color: #d63384;
-    font-size: 1.3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
 .date, .venue, .time {
     margin-bottom: 0.25rem;
+    color: #d63384;
+    font-size: 1.3rem;
 } 
