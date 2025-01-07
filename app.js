@@ -25,7 +25,7 @@ class FairSchedule {
                 dataType: 'text'
             });
             this.events = this.parseTSV(response);
-            this.updateProgramTypeOptions();
+            this.updateProgramTypeOptions(this.events);
         } catch (error) {
             console.error('Error loading events:', error);
         }
@@ -59,14 +59,10 @@ class FairSchedule {
 
     setupFilters() {
         this.searchInput = $('#searchInput');
-        this.programTypeFilter = $('#programTypeFilter');
-        this.dateFilter = $('#dateFilter');
     }
 
     setupEventListeners() {
         this.searchInput.on('input', () => this.filterEvents());
-        this.programTypeFilter.on('change', () => this.filterEvents());
-        this.dateFilter.on('change', () => this.filterEvents());
         
         $(document).on('click', '.toggle-details', function() {
             const $details = $(this).next('.programme-details');
@@ -84,11 +80,41 @@ class FairSchedule {
         });
     }
 
-    updateProgramTypeOptions() {
-        const types = [...new Set(this.events.map(event => event.programType))];
+    updateProgramTypeOptions(eventsList) {
+        // Clear existing options except the default "All" option
+        this.programTypeFilter.find('option:not(:first)').remove();
+        
+        // Get unique program types from events
+        const types = [...new Set(eventsList.map(event => event.programType))]
+            .sort();
+        
+        // Add options for each unique type
         types.forEach(type => {
             this.programTypeFilter.append(`<option value="${type}">${type}</option>`);
         });
+
+        // Update date filter
+        const dates = [...new Set(eventsList.map(event => event.date))]
+            .sort();
+        
+        // Replace date input with select
+        const dateSelect = $('<select>', {
+            id: 'dateFilter',
+            class: 'form-select mt-2'
+        }).append('<option value="">All Dates</option>');
+
+        dates.forEach(date => {
+            const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            dateSelect.append(`<option value="${date}">${formattedDate}</option>`);
+        });
+
+        this.dateFilter.replaceWith(dateSelect);
+        this.dateFilter = dateSelect;
     }
 
     isEventCurrent(event) {
@@ -106,16 +132,11 @@ class FairSchedule {
 
     filterEvents() {
         const searchTerm = this.searchInput.val().toLowerCase();
-        const programType = this.programTypeFilter.val();
-        const dateFilter = this.dateFilter.val();
 
         this.renderEvents(this.events.filter(event => {
-            const matchesSearch = Object.values(event).some(value => 
+            return Object.values(event).some(value => 
                 value.toLowerCase().includes(searchTerm)
             );
-            const matchesType = !programType || event.programType === programType;
-            const matchesDate = !dateFilter || event.date === dateFilter;
-            return matchesSearch && matchesType && matchesDate;
         }));
     }
 
