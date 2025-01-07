@@ -8,7 +8,7 @@ class FairSchedule {
     async init() {
         try {
             await this.loadEvents();
-            this.setupFilters();
+            this.setupSearch();
             this.setupEventListeners();
             this.renderEvents();
             this.startTimeUpdates();
@@ -20,12 +20,10 @@ class FairSchedule {
     async loadEvents() {
         try {
             const response = await $.ajax({
-                // url: './events.csv',
-                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRp22KQAC4hs9_NGWEOyQ8i6JyHwspWz1jTPr_uLci9LIBvj7m4-RdrN6MwKXOhW0RI0g0M09qFtJhm/pub?gid=0&single=true&output=tsv',
+                url: './events.csv',
                 dataType: 'text'
             });
-            this.events = this.parseTSV(response);
-            this.updateProgramTypeOptions(this.events);
+            this.events = this.parseCSV(response);
         } catch (error) {
             console.error('Error loading events:', error);
         }
@@ -35,7 +33,6 @@ class FairSchedule {
         const lines = csv.split('\n');
         const headers = lines[0].split(',').map(header => header.replace(/"/g, '').trim());
         return lines.slice(1).map(line => {
-            // Match CSV fields, handling quoted values with potential commas inside
             const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g)
                 .map(value => value.replace(/"/g, '').trim());
             return headers.reduce((obj, header, index) => {
@@ -45,19 +42,7 @@ class FairSchedule {
         });
     }
 
-    parseTSV(tsv) {
-        const lines = tsv.split('\n');
-        const headers = lines[0].split('\t').map(header => header.replace(/"/g, '').trim());
-        return lines.slice(1).map(line => {
-            const values = line.split('\t').map(value => value.replace(/"/g, '').trim());
-            return headers.reduce((obj, header, index) => {
-                obj[header] = values[index] || '';
-                return obj;
-            }, {});
-        });
-    }
-
-    setupFilters() {
+    setupSearch() {
         this.searchInput = $('#searchInput');
     }
 
@@ -78,43 +63,6 @@ class FairSchedule {
                 $text.text('Show Details');
             }
         });
-    }
-
-    updateProgramTypeOptions(eventsList) {
-        // Clear existing options except the default "All" option
-        this.programTypeFilter.find('option:not(:first)').remove();
-        
-        // Get unique program types from events
-        const types = [...new Set(eventsList.map(event => event.programType))]
-            .sort();
-        
-        // Add options for each unique type
-        types.forEach(type => {
-            this.programTypeFilter.append(`<option value="${type}">${type}</option>`);
-        });
-
-        // Update date filter
-        const dates = [...new Set(eventsList.map(event => event.date))]
-            .sort();
-        
-        // Replace date input with select
-        const dateSelect = $('<select>', {
-            id: 'dateFilter',
-            class: 'form-select mt-2'
-        }).append('<option value="">All Dates</option>');
-
-        dates.forEach(date => {
-            const formattedDate = new Date(date).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            dateSelect.append(`<option value="${date}">${formattedDate}</option>`);
-        });
-
-        this.dateFilter.replaceWith(dateSelect);
-        this.dateFilter = dateSelect;
     }
 
     isEventCurrent(event) {
