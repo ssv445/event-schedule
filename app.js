@@ -20,21 +20,20 @@ class FairSchedule {
     async loadEvents() {
         try {
             const response = await $.ajax({
-                url: './events.csv',
+                url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRp22KQAC4hs9_NGWEOyQ8i6JyHwspWz1jTPr_uLci9LIBvj7m4-RdrN6MwKXOhW0RI0g0M09qFtJhm/pub?gid=0&single=true&output=tsv',
                 dataType: 'text'
             });
-            this.events = this.parseCSV(response);
+            this.events = this.parseTSV(response);
         } catch (error) {
             console.error('Error loading events:', error);
         }
     }
 
-    parseCSV(csv) {
-        const lines = csv.split('\n');
-        const headers = lines[0].split(',').map(header => header.replace(/"/g, '').trim());
+    parseTSV(tsv) {
+        const lines = tsv.split('\n');
+        const headers = lines[0].split('\t').map(header => header.trim());
         return lines.slice(1).map(line => {
-            const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g)
-                .map(value => value.replace(/"/g, '').trim());
+            const values = line.split('\t').map(value => value.trim());
             return headers.reduce((obj, header, index) => {
                 obj[header] = values[index] || '';
                 return obj;
@@ -116,6 +115,26 @@ class FairSchedule {
                 const isCurrent = this.isEventCurrent(event);
                 const isFinished = this.isEventFinished(event);
 
+                const parseContactInfo = (text) => {
+                    if (!text) return [];
+                    return text.split(',').map(contact => {
+                        const parts = contact.trim().split('-');
+                        return {
+                            name: parts[0].trim(),
+                            phone: parts.length > 1 ? parts[1].trim() : null
+                        };
+                    });
+                };
+
+                const renderContacts = (contacts) => {
+                    return contacts.map(contact => {
+                        if (contact.phone) {
+                            return `${contact.name} <a href="tel:${contact.phone}" class="contact-phone">${contact.phone}</a>`;
+                        }
+                        return contact.name;
+                    }).join(', ');
+                };
+
                 container.append(`
                     <div class="col-12">
                         <div class="event-row ${isCurrent ? 'current' : ''} ${isFinished ? 'finished' : ''}">
@@ -127,6 +146,14 @@ class FairSchedule {
                                         <div class="event-brief">${event.programmeDetail1}</div>
                                         <span class="event-type">${event.programType}</span>
                                         ${isCurrent ? '<span class="now-live">Now Live!</span>' : ''}
+                                        <div class="event-contacts">
+                                            <div class="coordinators">
+                                                <strong>Coordinators:</strong> ${renderContacts(parseContactInfo(event.coordinators))}
+                                            </div>
+                                            <div class="volunteers">
+                                                <strong>Volunteers:</strong> ${renderContacts(parseContactInfo(event.volunteers))}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 ${this.isAdminMode ? this.renderAdminDetails(event) : this.renderPublicDetails(event)}

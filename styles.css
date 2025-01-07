@@ -135,4 +135,24 @@
     border-radius: 4px;
     margin-top: 0.5rem;
     border-left: 3px solid #dc3545;
+}
+
+.event-contacts {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.coordinators, .volunteers {
+    margin-bottom: 0.25rem;
+}
+
+.contact-phone {
+    color: #0d6efd;
+    text-decoration: none;
+    margin-left: 0.25rem;
+}
+
+.contact-phone:hover {
+    text-decoration: underline;
 } 
